@@ -17,27 +17,8 @@ public class RSAUtil {
     private RSAUtil(){}
     
     private static final String UTF8="utf-8";
-	
-	//RSA公钥加密
-    public static String encrypt(String data, RSAPublicKey publicKey) throws Exception{  
-    	Cipher cipher = Cipher.getInstance("RSA");  
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);  
-    	byte[] encrypted = cipher.doFinal(data.getBytes(UTF8));
-    	return new String(Base64Util.encryptBASE(encrypted));
-    } 
-    
-    //RSA私钥解密
-    public static String decrypt(String data, RSAPrivateKey privateKey) throws Exception{  
-        Cipher cipher = Cipher.getInstance("RSA");  
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);  
-    	byte[] encrypted = Base64Util.decryptBASE(data);
-    	byte[] original = cipher.doFinal(encrypted);
-    	return new String(original, UTF8);
-    } 
-	//################ RSA 自主产生密钥方式 结束 ########################
-    
 
-    //##################### RSA 使用证书方式 开始 ##############################
+
     public static final String KEY_STORE = "JKS";
     public static final String X509 = "X.509";
 

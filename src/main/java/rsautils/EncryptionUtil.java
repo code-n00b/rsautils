@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public final class EncryptionUtil {
 
-    private static final String GEN_AES_ERROR = "生成AESkey错误{}";
     private static final String VERIFY_SIGN_ERROR = "私钥验证签名错误";
-    private static final String DES_CRY_ERROR = "解密过程中发生错误{}";
 
     private EncryptionUtil() {
         // No-op; won't be called
@@ -31,16 +29,16 @@ public final class EncryptionUtil {
     public static JSONObject encryptData(String data, String keyStorePath, String password,
                                      String alias,String cerPath) throws Exception {
         // 生产一个随机key用于加密报文
-        String AESKey = AESUtil.initAESkey();
-        String encryptedData = AESUtil.encrypt(data, AESKey);
-        String encryptedAESKey = RSAUtil.encryptByPublicKey(AESKey, cerPath);
-        String SHA1EncryptedData = SHAUtil.getSHA1Code(encryptedData);
-        String sign = RSAUtil.encryptByPrivateKey(SHA1EncryptedData, keyStorePath, alias, password);
+        String aesKey = AESUtil.initAESkey();
+        String encryptedData = AESUtil.encrypt(data, aesKey);
+        String encryptedaesKey = RSAUtil.encryptByPublicKey(aesKey, cerPath);
+        String sha1EncryptedData = SHAUtil.getSHA1Code(encryptedData);
+        String sign = RSAUtil.encryptByPrivateKey(sha1EncryptedData, keyStorePath, alias, password);
 
         JSONObject dataJson = new JSONObject();
         dataJson.put("data", encryptedData);
         dataJson.put("sign", sign);
-        dataJson.put("aeskey", encryptedAESKey);
+        dataJson.put("aeskey", encryptedaesKey);
         return dataJson;
     }
 
@@ -55,24 +53,20 @@ public final class EncryptionUtil {
      * @return
      * @throws Exception
      */
-    public static String decryptData(String data, String sign, String AESKey, String keyStorePath, String alias,
+    public static String decryptData(String data, String sign, String aesKey, String keyStorePath, String alias,
                                      String password, String cerPath) throws Exception {
         String ret = "";
-        try {
-            String SHA1EncryptedData = SHAUtil.getSHA1Code(data);
-            String decryptedSign = RSAUtil.decryptByPublicKey(sign, cerPath);
-            // 验证sign
-            if (!SHA1EncryptedData.equals(decryptedSign)) {
-                throw new Exception(VERIFY_SIGN_ERROR);
-            }
-            AESKey = RSAUtil.decryptByPrivateKey(AESKey, keyStorePath, alias, password);
-            String dataContent = AESUtil.decrypt(data, AESKey);
-            ret = dataContent;
-            return ret;
-        } catch (Exception e) {
-            throw e;
-        }
 
+        String sha1EncryptedData = SHAUtil.getSHA1Code(data);
+        String decryptedSign = RSAUtil.decryptByPublicKey(sign, cerPath);
+        // 验证sign
+        if (!sha1EncryptedData.equals(decryptedSign)) {
+            throw new Exception(VERIFY_SIGN_ERROR);
+        }
+        aesKey = RSAUtil.decryptByPrivateKey(aesKey, keyStorePath, alias, password);
+        String dataContent = AESUtil.decrypt(data, aesKey);
+        ret = dataContent;
+        return ret;
     }
 
 

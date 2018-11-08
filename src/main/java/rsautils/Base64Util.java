@@ -1,19 +1,16 @@
 package rsautils;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 public class Base64Util {
     private Base64Util(){}
-    //加密
-    public static String encryptBASE(byte[] key) {
-        return (new BASE64Encoder()).encode(key);
+
+
+    public static String encryptBASE(byte[] key){
+        return Base64.encodeBase64String(key);
     }
 
-
-    //解密
-
-    public static byte[] decryptBASE(String key) throws Exception {
-        return (new BASE64Decoder()).decodeBuffer(key);
+    public static byte[] decryptBASE(String key){
+        return Base64.decodeBase64(key);
     }
 }

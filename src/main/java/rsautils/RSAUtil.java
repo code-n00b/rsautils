@@ -9,8 +9,6 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
 public class RSAUtil {
@@ -78,7 +76,7 @@ public class RSAUtil {
  
         byte[] encrypted = cipher.doFinal(data.getBytes(UTF8));
         
-        return new String(Base64Util.encryptBASE(encrypted));
+        return Base64Util.encryptBASE(encrypted);
     }
 
     //私钥解密
@@ -97,7 +95,7 @@ public class RSAUtil {
         Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] encrypted = cipher.doFinal(data.getBytes(UTF8));
-        return new String(Base64Util.encryptBASE(encrypted));
+        return Base64Util.encryptBASE(encrypted);
     }
 
     //公钥解密

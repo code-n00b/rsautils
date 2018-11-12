@@ -9,4 +9,4 @@ keytool -export -alias alias -keystore test.keystore -file test.cer
 ![](https://ww1.sinaimg.cn/large/a6214fe3gy1fwyfq51lroj20a10f0q31.jpg)
 
 ### server
-![](https://ww1.sinaimg.cn/large/a6214fe3gy1fwyfsw8kfaj20pt0dsglq.jpg)
+![](https://ww1.sinaimg.cn/large/a6214fe3gy1fx5jtmzw6bj20pt0dsaa6.jpg)
